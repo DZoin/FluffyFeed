@@ -1,0 +1,13 @@
+{
+    "version": "1.0.0",
+    "description": "Restful API to spread and receive fluffy cuteness",
+    "repository": {
+        "url": "https://github.com/DZoin/FluffyFeed"
+    },
+    "license": "MIT",
+    "name": "node-api",
+    "main": "server.js",
+    "dependencies": {
+        "express": "~4.0.0"
+    }
+}
