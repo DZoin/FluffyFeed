@@ -32,7 +32,12 @@ router.get('/', function(req, res) {
 
 app.use('/api', router);
 
-mongoose.connect('mongodb://localhost:27017');
+// Db connection
+var dbPromise = mongoose.connect('mongodb://localhost:27017', {
+  useMongoClient: true
+});
+
+// Server start
 app.listen(port);
 
 // Test logging
