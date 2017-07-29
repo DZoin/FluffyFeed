@@ -59,6 +59,18 @@ router.route('/kittens')
         });
     });
 
+router.route('/kittens/:kitten_name_filter')
+    .get(function(req, res) {
+        const regex = new RegExp(`.*${req.params.kitten_name_filter}.*`, "i");
+        Kitten.find({name: regex})
+            .exec((err, kittens) => {
+                if (err)
+                    res.send(err);
+
+                res.json(kittens);
+            });
+    });
+
 app.use('/api', router);
 
 // Db connection
