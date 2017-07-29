@@ -22,7 +22,7 @@ function generateUUID () { // Public Domain/MIT
 
 router.route("")
     .get(function(req, res) {
-        var token = jwt.sign({ id: generateUUID()}, jwtconfig.secret, {
+        const token = jwt.sign({ id: generateUUID()}, jwtconfig.secret, {
           expiresIn: one_day,
           algorithm: jwtconfig.algorithm
         });
@@ -39,9 +39,9 @@ router.route("")
         const decodedToken = jwt.verify(req.query.token, jwtconfig.secret)
         
         const tokenObj = new Token();
-        token.id = decodedToken.id;
+        tokenObj.id = decodedToken.id;
         
-        token.save(function(err) {
+        tokenObj.save(function(err) {
             if (err) {
                 logger.err(`Token blacklist failed with error: ${err}`);
                 res.status(500).send("Session invalidation failed!");

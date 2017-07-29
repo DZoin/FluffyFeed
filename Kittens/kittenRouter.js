@@ -27,9 +27,10 @@ router.route("")
         const regex = new RegExp(`.*${req.params.kitten_name_filter}.*`, "i");
         Kitten.find({name: regex})
             .exec((err, kittens) => {
-                if (err)
+                if (err) {
                     res.send(err);
-
+                    res.status(500).send("Error! Kitten creation failed!");
+                }
                 res.json(kittens);
             });
     });
