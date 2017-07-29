@@ -37,7 +37,7 @@ router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
 
-router.route('/kitten')
+router.route('/kittens')
     .post(function(req, res) {
         let kitten = new Kitten();
         kitten.name = req.body.name;  // set the kitten's name (comes from the request)
@@ -49,14 +49,20 @@ router.route('/kitten')
             
             res.json({ message: 'Kitten created!' });
         });
+    })
+    .get(function(req, res) {
+        Kitten.find(function(err, kittens) {
+            if (err)
+                res.send(err);
+
+            res.json(kittens);
+        });
     });
 
 app.use('/api', router);
 
 // Db connection
 // TODO: Plugin promise library http://mongoosejs.com/docs/promises.html
-// mongodb://${config.username}:${config.password}@${config.dbhost}/${config.dbname}
-
 mongoose.connect(`mongodb://${config.dbowner}:${config.dbpass}@${config.dbhost}/${config.dbname}`, {
   useMongoClient: true
 }).then(()=> {
