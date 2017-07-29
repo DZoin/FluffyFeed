@@ -24,8 +24,7 @@ const jwtMiddleware = jwt({
             return req.query.token;
         }
         return null;
-    },
-    isRevoked: isRevokedCallback
+    }
 }).unless({path: ['/token']});
 
 module.exports = jwtMiddleware;
