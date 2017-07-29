@@ -1,21 +1,21 @@
 'use strict';
 
 const express = require('express');
+const app = module.exports = express();
 const mongoose   = require('mongoose');
 const bodyParser = require('body-parser');
 const winston = require('winston');
 const expressWinston = require('express-winston');
 
 const logger = require('./logger.js');
-const config = require('./Config/dbconfig.json');
+const dbconfig = require('./Config/dbconfig.json');
 const kittenRouter = require('./Kittens/kittenRouter.js');
+const tokenRouter = require('./Token/tokenRouter.js');
 const jwtMiddleware = require('./Authentication/jwtMiddleware.js');
 
 // TO DO: Logs must output structured, pretty printed JSON literals.
 // JSON.stringify() outpus too complex json with mongoose objects (override toString?)
 
-
-const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressWinston.logger({
@@ -35,11 +35,12 @@ app.use(expressWinston.logger({
 const port = process.env.PORT || 8080;
 
 app.use(jwtMiddleware);
+app.use("/token", tokenRouter);
 app.use("/api/kittens", kittenRouter);
 
 // Db connection
 // TODO: Plugin promise library http://mongoosejs.com/docs/promises.html
-mongoose.connect(`mongodb://${config.dbowner}:${config.dbpass}@${config.dbhost}/${config.dbname}`, {
+mongoose.connect(`mongodb://${dbconfig.dbowner}:${dbconfig.dbpass}@${dbconfig.dbhost}/${dbconfig.dbname}`, {
   useMongoClient: true
 }).then(()=> {
     // Server start
