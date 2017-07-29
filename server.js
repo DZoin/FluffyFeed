@@ -7,7 +7,7 @@ const winston = require('winston');
 const expressWinston = require('express-winston');
 const config = require('./Config/dbconfig.json');
 
-const Kitten = require('./Models/kitten');
+const kittenRouter = require('./Kittens/kittenRouter.js');
 
 // TO DO: Logs must output structured, pretty printed JSON literals.
 // JSON.stringify() outpus too complex json with mongoose objects (override toString?)
@@ -56,39 +56,7 @@ router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
 
-router.route('/kittens')
-    .post(function(req, res) {
-        let kitten = new Kitten();
-        kitten.name = req.body.name;  // set the kitten's name (comes from the request)
-
-        kitten.save(function(err) {
-            if (err) {
-                res.send(err);
-            }
-            res.json({ message: 'Kitten created!' });
-        });
-    })
-    .get(function(req, res) {
-        Kitten.find(function(err, kittens) {
-            if (err)
-                res.send(err);
-            res.json(kittens);
-        });
-    });
-
-router.route('/kittens/:kitten_name_filter')
-    .get(function(req, res) {
-        const regex = new RegExp(`.*${req.params.kitten_name_filter}.*`, "i");
-        Kitten.find({name: regex})
-            .exec((err, kittens) => {
-                if (err)
-                    res.send(err);
-
-                res.json(kittens);
-            });
-    });
-
-app.use('/api', router);
+app.use("/api/kittens", kittenRouter);
 
 // Db connection
 // TODO: Plugin promise library http://mongoosejs.com/docs/promises.html
