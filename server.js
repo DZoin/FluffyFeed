@@ -4,6 +4,7 @@ var express = require('express');
 var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
 const winston = require('winston');
+const config = require('./config.json');
 
 var Kitten = require('./Models/kitten');
 
@@ -36,7 +37,6 @@ router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
 
-
 router.route('/kitten')
     .post(function(req, res) {
         let kitten = new Kitten();
@@ -55,13 +55,15 @@ app.use('/api', router);
 
 // Db connection
 // TODO: Plugin promise library http://mongoosejs.com/docs/promises.html
-mongoose.connect('mongodb://fluffyowner:fof*xjdQwPDsGBpZcIW2@localhost/fluffyfeed', {
+// mongodb://${config.username}:${config.password}@${config.dbhost}/${config.dbname}
+
+mongoose.connect(`mongodb://${config.dbowner}:${config.dbpass}@${config.dbhost}/${config.dbname}`, {
   useMongoClient: true
 }).then(()=> {
     // Server start
     app.listen(port);
     // Test logging
     logger.info(`Magic happens on port ${port}`);
-}).catch((err)=>{
+}).catch(()=> {
     logger.err(`DB Initialization failed: ${err}`);
 });
