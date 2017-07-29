@@ -26,9 +26,30 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 8080;
 var router = express.Router();
 
+// Basic middleware
+router.use(function(req, res, next) {
+    logger.info("Inside middleware");
+    next();
+});
+
 router.get('/', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
+
+
+router.route('/kitten')
+    .post(function(req, res) {
+        let kitten = new Kitten();
+        kitten.name = req.body.name;  // set the kitten's name (comes from the request)
+
+        kitten.save(function(err) {
+            if (err) {
+                res.send(err);
+            }
+            
+            res.json({ message: 'Kitten created!' });
+        });
+    });
 
 app.use('/api', router);
 
