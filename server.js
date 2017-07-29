@@ -5,7 +5,7 @@ const mongoose   = require('mongoose');
 const bodyParser = require('body-parser');
 const winston = require('winston');
 const expressWinston = require('express-winston');
-const config = require('./config.json');
+const config = require('./Config/dbconfig.json');
 
 const Kitten = require('./Models/kitten');
 

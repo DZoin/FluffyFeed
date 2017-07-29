@@ -60,7 +60,8 @@ typings/
 # Database for development
 /Database
 
-#Logger Output
+# Logger Output
 /Logging
 
-config.json
+# Configuration files
+/Config
