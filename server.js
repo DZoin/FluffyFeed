@@ -54,12 +54,14 @@ router.route('/kitten')
 app.use('/api', router);
 
 // Db connection
-var dbPromise = mongoose.connect('mongodb://localhost:27017', {
+// TODO: Plugin promise library http://mongoosejs.com/docs/promises.html
+mongoose.connect('mongodb://fluffyowner:fof*xjdQwPDsGBpZcIW2@localhost/fluffyfeed', {
   useMongoClient: true
+}).then(()=> {
+    // Server start
+    app.listen(port);
+    // Test logging
+    logger.info(`Magic happens on port ${port}`);
+}).catch((err)=>{
+    logger.err(`DB Initialization failed: ${err}`);
 });
-
-// Server start
-app.listen(port);
-
-// Test logging
-logger.info(`Magic happens on port ${port}`);
