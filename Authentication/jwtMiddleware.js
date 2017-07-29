@@ -19,6 +19,7 @@ const isRevokedCallback = function(req, payload, done){
 
 const jwtMiddleware = jwt({
     secret: jwtconfig.secret,
+    algorithm: jwtconfig.algorithm,
     getToken: function fromQuerystring (req) {
         if (req.query && req.query.token) {
             return req.query.token;

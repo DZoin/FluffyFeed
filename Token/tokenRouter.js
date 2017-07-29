@@ -9,7 +9,8 @@ const one_day = 1440;
 router.route("")
     .get(function(req, res) {
         var token = jwt.sign({}, jwtconfig.secret, {
-          expiresIn: one_day
+          expiresIn: one_day,
+          algorithm: jwtconfig.algorithm
         });
 
         res.json({
