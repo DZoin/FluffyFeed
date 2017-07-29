@@ -1,14 +1,14 @@
 "use strict";
 
-var express = require('express');
-var mongoose   = require('mongoose');
-var bodyParser = require('body-parser');
+const express = require('express');
+const mongoose   = require('mongoose');
+const bodyParser = require('body-parser');
 const winston = require('winston');
 const config = require('./config.json');
 
-var Kitten = require('./Models/kitten');
+const Kitten = require('./Models/kitten');
 
-var logger = new (winston.Logger)({
+const logger = new (winston.Logger)({
     transports: [
       new (winston.transports.Console)({ level: 'info' }),
       new (winston.transports.File)({
@@ -18,14 +18,14 @@ var logger = new (winston.Logger)({
     ]
   });
 
-var app = express();
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Routing
-var port = process.env.PORT || 8080;
-var router = express.Router();
+const port = process.env.PORT || 8080;
+const router = express.Router();
 
 // Basic middleware
 router.use(function(req, res, next) {
