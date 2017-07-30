@@ -65,3 +65,6 @@ typings/
 
 # Configuration files
 /Config
+
+# Images
+/images
