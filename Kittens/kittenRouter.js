@@ -7,6 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const fse = require('fs-extra');
 var im = require('imagemagick');
 
+const ImagePathBuilder = require('../Utils/imagePathBuilder.js');
 const uuid = require('../Utils/uuid.js');
 
 const Kitten = require('./kitten.js');
@@ -33,18 +34,19 @@ router.post("", function (req, res) {
     if(req.files.photo) {
         const id = uuid();
         const fileExtension = req.files.photo.path.split('.').pop();
-        const localPath = `./images/${id}.${fileExtension}`;
-        fse.copy(req.files.photo.path, localPath)
+        const imagePathBuilder = new ImagePathBuilder('images', id, fileExtension);
+        
+        fse.copy(req.files.photo.path, imagePathBuilder.filePath())
             .then(() => {
                 im.resize({
-                    srcPath: localPath,
-                    dstPath: `./images/${id}.thumbnail.${fileExtension}`,
+                    srcPath: imagePathBuilder.filePath(),
+                    dstPath: imagePathBuilder.thumbnailPath(),
                     width:   256
                 }, function(err, stdout, stderr){
                 if (err) throw err;
-                logger.info(`resized ${id}.${fileExtension} to fit within 256x256px`);
+                logger.info(`resized ${imagePathBuilder.fileName()} to fit within 256x256px`);
                 });
-                kitten.photoPath = `${req.headers.host}/${id}.thumbnail.${fileExtension}`;
+                kitten.photoPath = imagePathBuilder.thumbnailUri(req);
             })
             .then(()=> {
                 kitten.save(function (err) {
