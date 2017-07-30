@@ -96,30 +96,57 @@ router.get("/:pagesize?/:index?", function (req, res) {
     const last_comment_id = ObjectId.isValid(req.params.index) ? new ObjectId(req.params.index) : null;
 
     let kittenQuery = null;
+    if(req.query.name_filter) { // The unfiltered query is indexed and therefor much faster
+        const regex = new RegExp(`.*${req.query.name_filter}.*`, "i");
 
-    if (last_comment_id) {
-        kittenQuery = Kitten.find()
-            .where("_id").gt(last_comment_id)
-            .limit(pageSize)
-            .exec();
+        if (last_comment_id) {
+            kittenQuery = Kitten.find({name: regex})
+                .where("_id").gt(last_comment_id)
+                .limit(pageSize)
+                .exec();
 
+        } else {
+            kittenQuery = Kitten.find({name: regex}).limit(pageSize).exec();
+        }
+
+        kittenQuery.then((kittens) => {
+            const responseBody = {
+                "kittens": kittens,
+                "pageSize": pageSize
+            }
+            if (kittens.length == pageSize) {
+                responseBody.index = kittens[kittens.length - 1]._id
+            }
+            res.json(responseBody);
+        }).catch(err => {
+            logger.error(`Query failed with error: ${err}`);
+            res.status(internal_server_error).send("Error! Kitten retrieval failed!");
+        });
     } else {
-        kittenQuery = Kitten.find().limit(pageSize).exec();
-    }
+        if (last_comment_id) {
+            kittenQuery = Kitten.find()
+                .where("_id").gt(last_comment_id)
+                .limit(pageSize)
+                .exec();
 
-    kittenQuery.then((kittens) => {
-        const responseBody = {
-            "kittens": kittens,
-            "pageSize": pageSize
+        } else {
+            kittenQuery = Kitten.find().limit(pageSize).exec();
         }
-        if (kittens.length == pageSize) {
-            responseBody.index = kittens[kittens.length - 1]._id
-        }
-        res.json(responseBody);
-    }).catch(err => {
-        logger.error(`Query failed with error: ${err}`);
-        res.status(internal_server_error).send("Error! Kitten retrieval failed!");
-    });
+
+        kittenQuery.then((kittens) => {
+            const responseBody = {
+                "kittens": kittens,
+                "pageSize": pageSize
+            }
+            if (kittens.length == pageSize) {
+                responseBody.index = kittens[kittens.length - 1]._id
+            }
+            res.json(responseBody);
+        }).catch(err => {
+            logger.error(`Query failed with error: ${err}`);
+            res.status(internal_server_error).send("Error! Kitten retrieval failed!");
+        });
+    }
 });
 
 module.exports = router;
