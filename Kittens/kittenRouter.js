@@ -8,6 +8,7 @@ const Kitten = require('./kitten.js');
 const logger = require('../logger.js');
 const internal_server_error = 500;
 const bad_request = 400;
+const created = 201;
 
 /**
  * @api {post} /api/kitten Create a kitten profile
@@ -28,7 +29,7 @@ router.post("", function (req, res) {
             logger.error(`Query failed with error: ${err}`)
             res.status(internal_server_error).send("Error! Kitten creation failed!");
         }
-        res.json({ message: 'Kitten created!' });
+        res.status(created).json({ message: 'Kitten created!' });
     });
 });
 /**
