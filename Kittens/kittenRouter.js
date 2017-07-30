@@ -7,16 +7,21 @@ const ObjectId = mongoose.Types.ObjectId;
 const Kitten = require('./kitten.js');
 const logger = require('../logger.js');
 const internal_server_error = 500;
+const bad_request = 400;
 
 /**
- * @api {post} /api/kitten/:name Create a kitten profile
+ * @api {post} /api/kitten Create a kitten profile
  * @apiName PostKitten
  * @apiGroup Kitten
  * @apiParam{string}Name The name of the kitten
  */
-router.post("/:name", function (req, res) {
-    let kitten = new Kitten();
-    kitten.name = req.params.name;
+router.post("", function (req, res) {
+    const kitten = new Kitten();
+    if(!req.body.name) {
+        logger.info(`Kitten name is empty`);
+        res.status(bad_request).send("Bad request! Kitten name cannot be empty!");
+    }
+    kitten.name = req.body.name;
 
     kitten.save(function (err) {
         if (err) {
@@ -81,7 +86,7 @@ router.get("/:pagesize?/:index?", function (req, res) {
         }
         res.json(responseBody);
     }).catch(err => {
-        logger.error(`Query failed with error: ${err}`)
+        logger.error(`Query failed with error: ${err}`);
         res.status(internal_server_error).send("Error! Kitten retrieval failed!");
     });
 });

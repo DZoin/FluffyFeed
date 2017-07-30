@@ -31,7 +31,7 @@ function generateUUID() { // Public Domain/MIT
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4NGFkOWU0LTlkMjAtNGY0YS05YmU5LWMwYThkYjIwZWRiYiIsImlhdCI6MTUwMTM5OTg5MiwiZXhwIjoxNTAxNDAxMzMyfQ.TKxEG4taUb2_CR9CeNO6Ht0uLniUSNog2tqQOMhr2Rc"
   }
  */
-router.get(function (req, res) {
+router.get("", function (req, res) {
     const token = jwt.sign({ id: generateUUID() }, jwtconfig.secret, {
         expiresIn: one_day,
         algorithm: jwtconfig.algorithm
