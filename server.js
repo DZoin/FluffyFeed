@@ -47,5 +47,5 @@ mongoose.connect(`mongodb://${dbconfig.dbowner}:${dbconfig.dbpass}@${dbconfig.db
     app.listen(port);
     logger.info(`Server started! Listening on port: ${port}`);
 }).catch(()=> {
-    logger.err(`DB Initialization failed: ${err}`); // TO DO: investigate why catch does not work
+    logger.error(`DB Initialization failed: ${err}`); // TO DO: investigate why catch does not work
 });

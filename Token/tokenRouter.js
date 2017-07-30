@@ -43,7 +43,7 @@ router.route("")
         
         tokenObj.save(function(err) {
             if (err) {
-                logger.err(`Token blacklist failed with error: ${err}`);
+                logger.error(`Token blacklist failed with error: ${err}`);
                 res.status(500).send("Session invalidation failed!");
             }
             res.json({ message: 'Session successfully invalidated!' });

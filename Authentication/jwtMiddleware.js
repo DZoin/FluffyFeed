@@ -14,7 +14,7 @@ const isRevokedCallback = function(req, payload, done){
     Token.findOne({id: regex})
         .exec((err, token) => {
             if (err) {
-                logger.err(`Failure in tokenId lookup with error: ${err}`);
+                logger.error(`Failure in tokenId lookup with error: ${err}`);
                 return done(err);
             }
             return done(null, !!token);
