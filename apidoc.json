@@ -1,0 +1,8 @@
+{
+    "name": "Fluffy Feed",
+    "version": "1.0.0",
+    "description": "Restful API to spread and receive fluffy cuteness",
+    "template": {
+        "forceLanguage": "en"
+    }
+}

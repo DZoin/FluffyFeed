@@ -9,6 +9,11 @@ const logger = require('../logger.js');
 const internal_server_error = 500;
 
 router.route("")
+    /**
+     * @api {post} /kitten Create a kitten profile
+     * @apiName PostKitten
+     * @apiGroup Kitten
+     */
     .post(function (req, res) {
         let kitten = new Kitten();
         kitten.name = req.query.name;
@@ -21,6 +26,11 @@ router.route("")
             res.json({ message: 'Kitten created!' });
         });
     })
+    /**
+     * @api {get} /kitten Request kitten feed
+     * @apiName GetKitten
+     * @apiGroup Kitten
+     */
     .get(function (req, res) {
         const pageSize = parseInt(req.query.pageSize) || 5;
 
