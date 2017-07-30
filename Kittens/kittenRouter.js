@@ -13,7 +13,7 @@ const bad_request = 400;
  * @api {post} /api/kitten Create a kitten profile
  * @apiName PostKitten
  * @apiGroup Kitten
- * @apiParam{string}Name The name of the kitten
+ * @apiParam{string}Name The name of the kitten. Must be passed as x-www-form-urlencoded
  */
 router.post("", function (req, res) {
     const kitten = new Kitten();
@@ -51,7 +51,7 @@ router.post("", function (req, res) {
         },
         {
             "_id": "597c3448d5e87d1845e02dea",
-            "name": "Stoyancho",
+            "name": "Roshko",
             "__v": 0
         }
     ],
