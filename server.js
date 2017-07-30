@@ -2,6 +2,8 @@
 
 const express = require('express');
 const app = module.exports = express();
+var cors = require('cors');
+var corsconfig = require('./Config/corsconfig.json');
 const mongoose   = require('mongoose');
 const bodyParser = require('body-parser');
 const winston = require('winston');
@@ -16,9 +18,20 @@ const tokenRouter = require('./Token/tokenRouter.js');
 const imageRouter = require('./Image/imageRouter.js');
 const jwtMiddleware = require('./Authentication/jwtMiddleware.js');
 
-// TO DO: Logs must output structured, pretty printed JSON literals.
-// JSON.stringify() outpus too complex json with mongoose objects (override toString?)
 
+const whitelist = corsconfig;
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
+app.options('*', cors());
+app.use(cors()); // app.use(cors(corsOptions)); for production
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multipartMiddleware);
 app.use(bodyParser.json());
@@ -45,7 +58,6 @@ app.use("/api/kittens", kittenRouter);
 app.use("/api/image", imageRouter);
 
 // Db connection
-// TODO: Plugin promise library http://mongoosejs.com/docs/promises.html
 mongoose.connect(`mongodb://${dbconfig.dbowner}:${dbconfig.dbpass}@${dbconfig.dbhost}/${dbconfig.dbname}`, {
   useMongoClient: true
 }).then(()=> {
