@@ -46,7 +46,7 @@ router.post("", function (req, res) {
                 if (err) throw err;
                 logger.info(`resized ${imagePathBuilder.fileName()} to fit within 256x256px`);
                 });
-                kitten.photoPath = imagePathBuilder.thumbnailUri(req);
+                kitten.image_uri = imagePathBuilder.thumbnailUri(req);
             })
             .then(()=> {
                 kitten.save(function (err) {

@@ -42,7 +42,7 @@ app.use(express.static('images'));
 app.use(jwtMiddleware);
 app.use("/token", tokenRouter);
 app.use("/api/kittens", kittenRouter);
-app.use("/image", imageRouter);
+app.use("/api/image", imageRouter);
 
 // Db connection
 // TODO: Plugin promise library http://mongoosejs.com/docs/promises.html

@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var KittenSchema   = new Schema({
     name: String,
-    photoPath: String
+    image_uri: String
 });
 
 module.exports = mongoose.model('Kitten', KittenSchema);
