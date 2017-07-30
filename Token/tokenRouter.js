@@ -19,7 +19,18 @@ function generateUUID() { // Public Domain/MIT
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 }
-
+/**
+ * @api {get} /token Get a JWT
+ * @apiName GetToken
+ * @apiGroup Token
+ * @apiSuccess{string}token The JWT
+ * @apiSuccessExample Sample response
+  {
+    "success": true,
+    "message": "Token issued successfully!",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM4NGFkOWU0LTlkMjAtNGY0YS05YmU5LWMwYThkYjIwZWRiYiIsImlhdCI6MTUwMTM5OTg5MiwiZXhwIjoxNTAxNDAxMzMyfQ.TKxEG4taUb2_CR9CeNO6Ht0uLniUSNog2tqQOMhr2Rc"
+  }
+ */
 router.get(function (req, res) {
     const token = jwt.sign({ id: generateUUID() }, jwtconfig.secret, {
         expiresIn: one_day,
@@ -32,6 +43,14 @@ router.get(function (req, res) {
         token: token
     });
 });
+
+/**
+ * @api {delete} /token/:token Blacklist a token
+ * @apiName DeleteToken
+ * @apiGroup Token
+ * @apiParam{string}token The token to invalidate
+ * @apiSuccess{string}message A success message
+ */
 router.delete("/:token", function (req, res) {
     const token = req.params.token;
 

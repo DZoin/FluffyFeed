@@ -9,9 +9,10 @@ const logger = require('../logger.js');
 const internal_server_error = 500;
 
 /**
- * @api {post} /kitten/:name Create a kitten profile
+ * @api {post} /api/kitten/:name Create a kitten profile
  * @apiName PostKitten
  * @apiGroup Kitten
+ * @apiParam{string}Name The name of the kitten
  */
 router.post("/:name", function (req, res) {
     let kitten = new Kitten();
@@ -26,9 +27,12 @@ router.post("/:name", function (req, res) {
     });
 });
 /**
- * @api {get} /kitten/:pagesize?/:index? Request kitten feed
+ * @api {get} /api/kitten/:pagesize?/:index? Request kitten feed
  * @apiName GetKitten
  * @apiGroup Kitten
+ * @apiParam{int}Pagesize [Optional]The number of items inside the response. Default value 5
+ * @apiParam{string}Index [Optional]The index of the last viewed item.
+ * Passing this parameter fetches the next page of the feed.
  * @apiSuccess{Array}kittens Array of Kitten objects
  * @apiSuccess{int}pageSize Current pagination size
  * @apiSuccess{string}index [Optional]Index of last item. If not present end of feed has been reached
