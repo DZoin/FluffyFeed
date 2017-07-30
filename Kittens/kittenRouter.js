@@ -5,6 +5,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const fse = require('fs-extra');
+var im = require('imagemagick');
+
 const uuid = require('../Utils/uuid.js');
 
 const Kitten = require('./kitten.js');
@@ -34,19 +36,27 @@ router.post("", function (req, res) {
         const localPath = `./images/${id}.${fileExtension}`;
         fse.copy(req.files.photo.path, localPath)
             .then(() => {
-                kitten.photoPath = `${req.headers.host}/${id}.${fileExtension}`;
+                im.resize({
+                    srcPath: localPath,
+                    dstPath: `./images/${id}.thumbnail.${fileExtension}`,
+                    width:   256
+                }, function(err, stdout, stderr){
+                if (err) throw err;
+                logger.info(`resized ${id}.${fileExtension} to fit within 256x256px`);
+                });
+                kitten.photoPath = `${req.headers.host}/${id}.thumbnail.${fileExtension}`;
             })
             .then(()=> {
                 kitten.save(function (err) {
                     if (err) {
-                        logger.error(`Query failed with error: ${err}`)
-                        res.status(internal_server_error).send("Error! Kitten creation failed!");
+                        throw err;
                     }
                     res.status(created).json({ message: 'Kitten created!' });
                 });
             })
             .catch(err => {
-                logger.error(`File storage failure with error: ${err}`);
+                logger.error(`Kitten creationf failure with error: ${err}`);
+                res.status(internal_server_error).send("Error! Kitten creation failed!");
             });      
     }   
 });
