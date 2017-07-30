@@ -68,10 +68,10 @@ router.post("", function (req, res) {
  * @apiGroup Kitten
  * @apiParam{int}Pagesize [Optional]The number of items inside the response. Default value 5
  * @apiParam{string}Index [Optional]The index of the last viewed item.
+ *  Passing this parameter fetches the next page of the feed.
  * @apiParam{string}name_filter [Optional]The results will be filtered if they do not contain the provided string.
  * The comparison ignores case. WARNING: This call does not utilize the database indexing and might result in slower
  * processing if the dataset is sufficiently large.
- * Passing this parameter fetches the next page of the feed.
  * @apiSuccess{Array}kittens Array of Kitten objects
  * @apiSuccess{int}pageSize [Optional]Current pagination size. Default value 10
  * @apiSuccess{string}index [Optional]Index of last item. If not present end of feed has been reached
