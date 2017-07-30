@@ -9,6 +9,7 @@ const logger = require('../logger.js');
 const internal_server_error = 500;
 const bad_request = 400;
 const created = 201;
+const defaultPageSize = 10;
 
 /**
  * @api {post} /api/kitten Create a kitten profile
@@ -40,7 +41,7 @@ router.post("", function (req, res) {
  * @apiParam{string}Index [Optional]The index of the last viewed item.
  * Passing this parameter fetches the next page of the feed.
  * @apiSuccess{Array}kittens Array of Kitten objects
- * @apiSuccess{int}pageSize Current pagination size
+ * @apiSuccess{int}pageSize [Optional]Current pagination size. Default value 10
  * @apiSuccess{string}index [Optional]Index of last item. If not present end of feed has been reached
  * @apiSuccessExample Sample response
   {
@@ -61,7 +62,7 @@ router.post("", function (req, res) {
     }
  */
 router.get("/:pagesize?/:index?", function (req, res) {
-    const pageSize = parseInt(req.params.pagesize) || 5;
+    const pageSize = parseInt(req.params.pagesize) || defaultPageSize;
 
     const last_comment_id = ObjectId.isValid(req.params.index) ? new ObjectId(req.params.index) : null;
 
