@@ -50,6 +50,10 @@ router.get("", function (req, res) {
  * @apiGroup Token
  * @apiParam{string}token The token to invalidate
  * @apiSuccess{string}message A success message
+ * @apiSuccessExample Sample response
+ * {
+ * "message":"Session successfully invalidated!"
+ * }
  */
 router.delete("/:token", function (req, res) {
     const token = req.params.token;
