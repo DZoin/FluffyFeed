@@ -6,17 +6,21 @@ const mongoose   = require('mongoose');
 const bodyParser = require('body-parser');
 const winston = require('winston');
 const expressWinston = require('express-winston');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
 
 const logger = require('./logger.js');
 const dbconfig = require('./Config/dbconfig.json');
 const kittenRouter = require('./Kittens/kittenRouter.js');
 const tokenRouter = require('./Token/tokenRouter.js');
+const imageRouter = require('./Image/imageRouter.js');
 const jwtMiddleware = require('./Authentication/jwtMiddleware.js');
 
 // TO DO: Logs must output structured, pretty printed JSON literals.
 // JSON.stringify() outpus too complex json with mongoose objects (override toString?)
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multipartMiddleware);
 app.use(bodyParser.json());
 app.use(expressWinston.logger({
     transports: [
@@ -34,9 +38,11 @@ app.use(expressWinston.logger({
 //Routing
 const port = process.env.PORT || 8080;
 
+app.use(express.static('images'));
 app.use(jwtMiddleware);
 app.use("/token", tokenRouter);
 app.use("/api/kittens", kittenRouter);
+app.use("/image", imageRouter);
 
 // Db connection
 // TODO: Plugin promise library http://mongoosejs.com/docs/promises.html

@@ -4,6 +4,9 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const fse = require('fs-extra');
+const uuid = require('../Utils/uuid.js');
+
 const Kitten = require('./kitten.js');
 const logger = require('../logger.js');
 const internal_server_error = 500;
@@ -25,13 +28,27 @@ router.post("", function (req, res) {
     }
     kitten.name = req.body.name;
 
-    kitten.save(function (err) {
-        if (err) {
-            logger.error(`Query failed with error: ${err}`)
-            res.status(internal_server_error).send("Error! Kitten creation failed!");
-        }
-        res.status(created).json({ message: 'Kitten created!' });
-    });
+    if(req.files.photo) {
+        const id = uuid();
+        const fileExtension = req.files.photo.path.split('.').pop();
+        const localPath = `./images/${id}.${fileExtension}`;
+        fse.copy(req.files.photo.path, localPath)
+            .then(() => {
+                kitten.photoPath = `${req.headers.host}/${id}.${fileExtension}`;
+            })
+            .then(()=> {
+                kitten.save(function (err) {
+                    if (err) {
+                        logger.error(`Query failed with error: ${err}`)
+                        res.status(internal_server_error).send("Error! Kitten creation failed!");
+                    }
+                    res.status(created).json({ message: 'Kitten created!' });
+                });
+            })
+            .catch(err => {
+                logger.error(`File storage failure with error: ${err}`);
+            });      
+    }   
 });
 /**
  * @api {get} /api/kitten/:pagesize?/:index? Request kitten feed
