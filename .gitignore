@@ -64,7 +64,10 @@ typings/
 /Logging
 
 # Configuration files
-/Config
+/Config/*
 
 # Images
 /images
+
+# Template files
+!*.template
