@@ -54,7 +54,7 @@ router.get("", function (req, res) {
 router.delete("/:token", function (req, res) {
     const token = req.params.token;
 
-    const decodedToken = jwt.verify(req.query.token, jwtconfig.secret)
+    const decodedToken = jwt.verify(req.params.token, jwtconfig.secret)
 
     const tokenObj = new Token();
     tokenObj.id = decodedToken.id;

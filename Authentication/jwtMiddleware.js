@@ -31,6 +31,6 @@ const jwtMiddleware = jwt({
         }
         return null;
     }
-}).unless({path: ['/token']});
+}).unless({path: /\/token/i });
 
 module.exports = jwtMiddleware;
