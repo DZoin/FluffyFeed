@@ -4,7 +4,7 @@ const jwt = require('express-jwt');
 const logger = require('../logger.js');
 const app = require('../server.js');
 const jwtconfig = require('../Config/jwtconfig.json');
-const Token = require('../Token/token.js');
+const Token = require('../User/token.js');
 
 const isRevokedCallback = function(req, payload, done){
     const issuer = payload.iss;
@@ -31,6 +31,6 @@ const jwtMiddleware = jwt({
         }
         return null;
     }
-}).unless({path: /\/token/i });
+}).unless({path: /\/user/i });
 
 module.exports = jwtMiddleware;

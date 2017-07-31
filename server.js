@@ -14,7 +14,7 @@ var multipartMiddleware = multipart();
 const logger = require('./logger.js');
 const dbconfig = require('./Config/dbconfig.json');
 const kittenRouter = require('./Kittens/kittenRouter.js');
-const tokenRouter = require('./Token/tokenRouter.js');
+const userRouter = require('./User/userRouter.js');
 const imageRouter = require('./Image/imageRouter.js');
 const jwtMiddleware = require('./Authentication/jwtMiddleware.js');
 
@@ -53,7 +53,7 @@ const port = process.env.PORT || 8080;
 
 app.use(express.static('images'));
 app.use(jwtMiddleware);
-app.use("/token", tokenRouter);
+app.use("/user", userRouter);
 app.use("/api/kittens", kittenRouter);
 app.use("/api/image", imageRouter);
 
