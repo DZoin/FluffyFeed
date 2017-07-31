@@ -26,8 +26,12 @@ const jwtMiddleware = jwt({
     algorithm: jwtconfig.algorithm,
     isRevoked: isRevokedCallback,
     getToken: function fromHeader (req) {
-        if (req.headers && req.headers.token) {
-            return req.headers.token;
+        if (req.headers && req.headers.authorization) {
+            const [type, token] = req.headers.authorization.split(" ");
+            if(type != "Bearer") {
+                return null;
+            }
+            return token;
         }
         return null;
     }
