@@ -14,6 +14,19 @@ const one_day = 1440;
 const bad_request = 400;
 const saltRounds = 10
 
+
+/**
+ * @api {post} /user/register Register user
+ * @apiName Register
+ * @apiGroup Authentication
+ * @apiParam{string}username [Body]Desired username
+ * @apiParam{string}password [Body]Desired password
+ * @apiSuccessExample Success example
+ * 
+ * {
+    "message": "User created!"
+   }
+*/
 router.post("/register", function (req, res) {
     if (!req.body.username && !req.body.password) {
         res.status(bad_request).send();
@@ -34,6 +47,19 @@ router.post("/register", function (req, res) {
         });
 });
 
+/**
+ * @api {post} /user/login Receive JWT access token
+ * @apiName Login
+ * @apiGroup Authentication
+ * @apiParam{string}username [Body]Username
+ * @apiParam{string}password [Body]Password
+ * @apiSuccessExample Success example
+ * {
+    "success": true,
+    "message": "Token issued successfully!",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZlZGJlOWJiLTRkNTEtNDU4Ny05ZDdhLWJjYTNkMTc2ODUxYiIsImlhdCI6MTUwMTQ4MTE5MCwiZXhwIjoxNTAxNDgyNjMwfQ.Pyuir929F08PViIiB1m0R0GhXV-yPriCUbCj5s1VAeA"
+   }
+*/
 router.post("/login", function (req, res) {
     if (!req.body.username && !req.body.password) {
         res.status(bad_request).send();
@@ -65,7 +91,16 @@ router.post("/login", function (req, res) {
         });
     });
 });
-
+/**
+ * @api {post} /user/logout/:token Revoke access token
+ * @apiName Logout
+ * @apiGroup Authentication
+ * @apiParam{string}token The issued JWT access token during the login procedure
+ * @apiSuccessExample Success example
+ * {
+    "message": "Session successfully invalidated!"
+   }
+*/
 router.post("/logout/:token", function (req, res) {
     const token = req.params.token;
     const decodedToken = jwt.verify(req.params.token, jwtconfig.secret);
