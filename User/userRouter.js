@@ -94,7 +94,7 @@ router.post("/login", function (req, res) {
  * @api {post} /user/logout/:token Revoke access token
  * @apiName Logout
  * @apiGroup Authentication
- * @apiParam{string}token [Header]The issued JWT access token during the login procedure
+ * @apiParam{string}token [Header] "Authorization: Bearer <token>" The issued JWT access token during the login procedure
  * @apiSuccessExample Success example
  * {
     "message": "Session successfully invalidated!"
