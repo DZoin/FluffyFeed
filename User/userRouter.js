@@ -57,7 +57,6 @@ router.post("/register", function (req, res) {
  * {
     "success": true,
     "message": "Token issued successfully!",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZlZGJlOWJiLTRkNTEtNDU4Ny05ZDdhLWJjYTNkMTc2ODUxYiIsImlhdCI6MTUwMTQ4MTE5MCwiZXhwIjoxNTAxNDgyNjMwfQ.Pyuir929F08PViIiB1m0R0GhXV-yPriCUbCj5s1VAeA"
    }
 */
 router.post("/login", function (req, res) {
@@ -83,10 +82,10 @@ router.post("/login", function (req, res) {
                 algorithm: jwtconfig.algorithm
             });
 
+            res.setHeader("token", token);
             res.json({
                 success: true,
-                message: 'Token issued successfully!',
-                token: token
+                message: 'Token issued successfully!'
             });
         });
     });
@@ -95,15 +94,17 @@ router.post("/login", function (req, res) {
  * @api {post} /user/logout/:token Revoke access token
  * @apiName Logout
  * @apiGroup Authentication
- * @apiParam{string}token The issued JWT access token during the login procedure
+ * @apiParam{string}token [Header]The issued JWT access token during the login procedure
  * @apiSuccessExample Success example
  * {
     "message": "Session successfully invalidated!"
    }
 */
-router.post("/logout/:token", function (req, res) {
-    const token = req.params.token;
-    const decodedToken = jwt.verify(req.params.token, jwtconfig.secret);
+router.post("/logout", function (req, res) {
+    if(!req.headers.token) {
+        res.status(400).send("Session invalidation failed! No token present in header");
+    }
+    const decodedToken = jwt.verify(req.headers.token, jwtconfig.secret);
     const tokenObj = new Token();
     tokenObj.id = decodedToken.id;
 

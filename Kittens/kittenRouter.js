@@ -22,6 +22,7 @@ const defaultPageSize = 10;
  * @apiName PostKitten
  * @apiGroup Kitten
  * @apiParam{string}Name The name of the kitten. Must be passed as x-www-form-urlencoded
+ * @apiParam{string}token [Header]The issued JWT access token during the login procedure
  */
 router.post("", function (req, res) {
     const kitten = new Kitten();
@@ -72,6 +73,7 @@ router.post("", function (req, res) {
  * @apiParam{string}name_filter [Optional]The results will be filtered if they do not contain the provided string.
  * The comparison ignores case. WARNING: This call does not utilize the database indexing and might result in slower
  * processing if the dataset is sufficiently large.
+ * @apiParam{string}token [Header]The issued JWT access token during the login procedure
  * @apiSuccess{Array}kittens Array of Kitten objects
  * @apiSuccess{int}pageSize [Optional]Current pagination size. Default value 10
  * @apiSuccess{string}index [Optional]Index of last item. If not present end of feed has been reached

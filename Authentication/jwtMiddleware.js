@@ -25,9 +25,9 @@ const jwtMiddleware = jwt({
     secret: jwtconfig.secret,
     algorithm: jwtconfig.algorithm,
     isRevoked: isRevokedCallback,
-    getToken: function fromQuerystring (req) {
-        if (req.query && req.query.token) {
-            return req.query.token;
+    getToken: function fromHeader (req) {
+        if (req.headers && req.headers.token) {
+            return req.headers.token;
         }
         return null;
     }
