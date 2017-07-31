@@ -57,7 +57,7 @@ router.post("/register", function (req, res) {
  * {
     "success": true,
     "message": "Token issued successfully!",
-   }
+}
 */
 router.post("/login", function (req, res) {
     if (!req.body.username && !req.body.password) {
@@ -91,10 +91,10 @@ router.post("/login", function (req, res) {
     });
 });
 /**
- * @api {post} /user/logout/:token Revoke access token
+ * @api {post} /user/logout Revoke access token
  * @apiName Logout
  * @apiGroup Authentication
- * @apiParam{string}token [Header] "Authorization: Bearer <token>" The issued JWT access token during the login procedure
+ * @apiParam{string}token [Header] "Authorization: Bearer \<token\>" The issued JWT access token during the login procedure
  * @apiSuccessExample Success example
  * {
     "message": "Session successfully invalidated!"
