@@ -1,9 +1,8 @@
 'use strict';
 
 const express = require('express');
-const jwt = require('jsonwebtoken');
-const logger = require('../logger.js');
 const router = express.Router();
+const bad_request = 400;
 
 /**
  * @api {get} /api/image/:image_uri View kitten thumbnail

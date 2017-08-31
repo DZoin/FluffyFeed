@@ -5,7 +5,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const fse = require('fs-extra');
-var im = require('imagemagick');
+const im = require('imagemagick');
 
 const ImagePathBuilder = require('../Utils/imagePathBuilder.js');
 const uuid = require('../Utils/uuid.js');

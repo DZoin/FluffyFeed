@@ -2,7 +2,6 @@
 
 const jwt = require('express-jwt');
 const logger = require('../logger.js');
-const app = require('../server.js');
 const jwtconfig = require('../Config/jwtconfig.json');
 const Token = require('../User/token.js');
 
